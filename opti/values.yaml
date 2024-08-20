@@ -1,0 +1,11 @@
+ns: opti-app
+
+postgresql:
+  global:
+    postgresql:
+      auth:
+        postgresPassword: passgg
+
+redis:
+  auth:
+    enabled: false
