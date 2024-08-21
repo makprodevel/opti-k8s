@@ -1,10 +1,7 @@
-ns: opti-app
-
 postgresql:
-  global:
-    postgresql:
-      auth:
-        postgresPassword: passgg
+  auth:
+    database: opti
+    postgresPassword: passme
 
 redis:
   auth:

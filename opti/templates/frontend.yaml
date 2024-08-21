@@ -36,17 +36,3 @@ spec:
       port: 80
       targetPort: 80
   type: ClusterIP
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: opti-frontend-nodeport
-spec:
-  type: NodePort
-  selector:
-    app: opti-frontend
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-      nodePort: 30080
