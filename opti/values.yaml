@@ -2,9 +2,20 @@ postgresql:
   auth:
     database: opti
     postgresPassword: passme
+  primary:
+    initdb:
+      scripts:
+        00_init_extensions.sql: |
+          CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+          CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
 redis:
   auth:
     enabled: false
+  master:
+    persistence:
+      enabled: false
   replica:
+    persistence:
+      enabled: false
     replicaCount: 1

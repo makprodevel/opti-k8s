@@ -18,20 +18,35 @@ spec:
           ports:
             - containerPort: 8000
           env:
-            - name: release
+            - name: RELEASE
               value: "yes"
-            - name: db_host
+            - name: POSTGRESQL_HOST
               value: {{ .Release.Name }}-postgresql
-            - name: db_pass
+            - name: POSTGRESQL_PASS
               value: {{ .Values.postgresql.auth.postgresPassword }}
             - name: redis_url
-              value: redis://{{ .Release.Name }}:6379
+              value: redis://{{ .Release.Name }}-redis-master:6379
+            - name: GOOGLE_CLIENT_ID
+              value: 387912847310-8l3qtrn530qtkgcoc1r86cu2tafn1scg.apps.googleusercontent.com
+            - name: SECRET_KEY
+              value: somestr
           readinessProbe:
             httpGet:
               path: /api/
               port: 8000
             initialDelaySeconds: 3
             periodSeconds: 5
+      initContainers:
+        - name: alembic-migrations
+          image: makprodevel/opti-backend
+          command: ["python", "-m", "poetry", "run", "alembic", "upgrade", "head"]
+          env:
+            - name: RELEASE
+              value: "yes"
+            - name: POSTGRESQL_HOST
+              value: {{ .Release.Name }}-postgresql
+            - name: POSTGRESQL_PASS
+              value: {{ .Values.postgresql.auth.postgresPassword }}
 ---
 apiVersion: v1
 kind: Service
