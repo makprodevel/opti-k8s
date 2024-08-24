@@ -19,8 +19,8 @@ spec:
         image: makprodevel/opti-backend
         command: ["python", "-m", "poetry", "run", "celery", "-A", "opti.chat.tasks:celery", "worker", "--loglevel=INFO"]
         env:
-        - name: redis_url
-          value: redis://{{ .Release.Name }}-redis-master:6379
+          {{ include "opti.env.release" . | nindent 10 }}
+          {{ include "opti.env.redis" . | nindent 10 }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -43,5 +43,5 @@ spec:
         image: makprodevel/opti-backend
         command: ["python", "-m", "poetry", "run", "celery", "-A", "opti.chat.tasks:celery", "beat", "--loglevel=INFO"]
         env:
-        - name: redis_url
-          value: redis://{{ .Release.Name }}-redis-master:6379
+          {{ include "opti.env.release" . | nindent 10 }}
+          {{ include "opti.env.redis" . | nindent 10 }}

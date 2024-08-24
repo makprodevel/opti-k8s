@@ -18,18 +18,11 @@ spec:
           ports:
             - containerPort: 8000
           env:
-            - name: RELEASE
-              value: "yes"
-            - name: POSTGRESQL_HOST
-              value: {{ .Release.Name }}-postgresql
-            - name: POSTGRESQL_PASS
-              value: {{ .Values.postgresql.auth.postgresPassword }}
-            - name: redis_url
-              value: redis://{{ .Release.Name }}-redis-master:6379
-            - name: GOOGLE_CLIENT_ID
-              value: 387912847310-8l3qtrn530qtkgcoc1r86cu2tafn1scg.apps.googleusercontent.com
-            - name: SECRET_KEY
-              value: somestr
+            {{ include "opti.env.release" . | nindent 12 }}
+            {{ include "opti.env.postgresql" . | nindent 12 }}
+            {{ include "opti.env.redis" . | nindent 12 }}
+            {{ include "opti.env.googleClientId" . | nindent 12 }}
+            {{ include "opti.env.secretKey" . | nindent 12 }}
           readinessProbe:
             httpGet:
               path: /api/
@@ -41,12 +34,8 @@ spec:
           image: makprodevel/opti-backend
           command: ["python", "-m", "poetry", "run", "alembic", "upgrade", "head"]
           env:
-            - name: RELEASE
-              value: "yes"
-            - name: POSTGRESQL_HOST
-              value: {{ .Release.Name }}-postgresql
-            - name: POSTGRESQL_PASS
-              value: {{ .Values.postgresql.auth.postgresPassword }}
+            {{ include "opti.env.release" . | nindent 12 }}
+            {{ include "opti.env.postgresql" . | nindent 12 }}
 ---
 apiVersion: v1
 kind: Service

@@ -1,3 +1,14 @@
+env:
+  postgresHost: POSTGRESQL_HOST
+  postgresPass: POSTGRESQL_PASS
+  redisUrl: REDIS_URL
+  googleClientIdKey: GOOGLE_CLIENT_ID
+  googleClientIdValue: 387912847310-8l3qtrn530qtkgcoc1r86cu2tafn1scg.apps.googleusercontent.com
+  secretKey: SECRET_KEY
+  secretValue: somestr
+  releaseKey: RELEASE
+  releaseValue: release
+
 postgresql:
   auth:
     database: opti

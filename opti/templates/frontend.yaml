@@ -15,9 +15,7 @@ spec:
       containers:
         - name: opti-frontend
           image: makprodevel/opti-frontend
-          env:
-            - name: VITE_GOOGLE_CLIENT_ID
-              value: 387912847310-8l3qtrn530qtkgcoc1r86cu2tafn1scg.apps.googleusercontent.com
+          env: {{ include "opti.env.googleClientIdVite" . | nindent 12 }}
           ports:
             - containerPort: 80
           readinessProbe:
