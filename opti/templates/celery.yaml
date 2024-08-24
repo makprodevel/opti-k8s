@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery-worker
+  labels:
+    app: celery-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: celery-worker
+  template:
+    metadata:
+      labels:
+        app: celery-worker
+    spec:
+      containers:
+      - name: celery-worker
+        image: makprodevel/opti-backend
+        command: ["python", "-m", "poetry", "run", "celery", "-A", "opti.chat.tasks:celery", "worker", "--loglevel=INFO"]
+        env:
+        - name: redis_url
+          value: redis://{{ .Release.Name }}-redis-master:6379
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery-beat
+  labels:
+    app: celery-beat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: celery-beat
+  template:
+    metadata:
+      labels:
+        app: celery-beat
+    spec:
+      containers:
+      - name: celery-beat
+        image: makprodevel/opti-backend
+        command: ["python", "-m", "poetry", "run", "celery", "-A", "opti.chat.tasks:celery", "beat", "--loglevel=INFO"]
+        env:
+        - name: redis_url
+          value: redis://{{ .Release.Name }}-redis-master:6379
